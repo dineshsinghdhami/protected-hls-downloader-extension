@@ -1,14 +1,14 @@
-# Protected HLS Downloader Extension
+# # Protected HLS Downloader Extension
 
 An extension for detecting, organizing, and downloading HLS/M3U8 video streams from supported webpages.
 
 > This project was created for educational and learning purposes to understand HLS streaming, browser networking, Chrome extensions, and media downloading. It is not intended to bypass DRM, authentication, subscriptions, paywalls, or other access restrictions.
 
-## Screenshot
+## # Screenshot
 
 ![Protected HLS Downloader Extension](assets/1screenshot.png)
 
-## Features
+## # Features
 
 - Detects HLS/M3U8 video streams
 - Automatically selects the best available quality
@@ -18,7 +18,7 @@ An extension for detecting, organizing, and downloading HLS/M3U8 video streams f
 - Shows live download progress
 - Supports multiple video downloads
 
-## How It Works
+## # How It Works
 
 ```text
 Webpage
@@ -36,7 +36,7 @@ Video Merge
 Saved Video File
 ```
 
-## Important Notice
+## # Important Notice
 
 This project is made only for **educational, learning, development, and testing purposes**.
 
@@ -54,7 +54,7 @@ If you believe anything in this repository is inappropriate or should be removed
 
 Valid removal requests will be reviewed respectfully.
 
-## Tech Stack
+## # Tech Stack
 
 - JavaScript
 - HTML
@@ -65,7 +65,7 @@ Valid removal requests will be reviewed respectfully.
 - Chrome Web Request APIs
 - Chrome Downloads API
 
-## Installation
+## # Installation
 
 ```bash
 git clone https://github.com/dineshsinghdhami/protected-hls-downloader-extension.git
@@ -88,7 +88,7 @@ Then:
 6. Open the extension
 7. Select the video you want to download
 
-## Current Limitations
+## # Current Limitations
 
 - Mainly supports HLS/M3U8 streams
 - DRM-protected media is not supported
@@ -96,7 +96,7 @@ Then:
 - Some streams may require additional remuxing
 - Websites may change their player implementation at any time
 
-## Author
+## # Author
 
 **Dinesh Singh Dhami**
 

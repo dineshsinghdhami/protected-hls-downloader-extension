@@ -1,221 +1,148 @@
-<div align="center">
+# # Protected HLS Downloader Extension
 
-<!-- Logo -->
-<img src="./icon.svg" width="128" height="128" alt="Blob Video Downloader Logo" style="margin-bottom: 20px; filter: drop-shadow(0px 8px 16px rgba(99, 102, 241, 0.3));" />
+An extension for detecting, organizing, and downloading embedded, locked, private, or not exposed video streams from supported webpages.
 
-# Blob Video Downloader
+> I created this project after experimenting with websites where videos were embedded, locked, private, or not exposed through a normal download button. The goal of this repository is to learn how HLS streaming, browser networking, Chrome extensions, and media downloading work - not to bypass DRM, account access controls, subscriptions, paywalls, or an organization's policies.
 
-<h3>A high-performance, elegant, and secure browser extension to sniff and download video streams locally.</h3>
+## # Screenshot
 
-<!-- Badges -->
-<p align="center">
-  <img src="https://img.shields.io/badge/version-1.2.0-6366f1?style=for-the-badge" alt="Version" />
-  <img src="https://img.shields.io/badge/Manifest-V3-a855f7?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Manifest V3" />
-  <img src="https://img.shields.io/badge/Platform-Chrome%20%7C%20Edge-0ea5e9?style=for-the-badge" alt="Platforms" />
-  <img src="https://img.shields.io/badge/JavaScript-ES6+-f7df1e?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
-  <img src="https://img.shields.io/badge/License-MIT-10b981?style=for-the-badge" alt="License" />
-</p>
+![Protected HLS Downloader Extension](assets/screenshot.png)
 
-<p align="center">
-  <a href="#key-features">Key Features</a> •
-  <a href="#how-it-works">How It Works</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#usage">Usage</a> •
-  <a href="#architecture">Architecture</a> •
-  <a href="#technology-stack">Technology Stack</a>
-</p>
+## # Features
 
----
+- Detects HLS/M3U8 video streams from webpages
+- Automatically selects the best available quality
+- Orders detected videos based on their position on the webpage
+- Displays videos as `Video 1`, `Video 2`, `Video 3`, and so on
+- Downloads HLS segments in parallel
+- Continues downloading when the popup is closed or another tab is opened
+- Shows live download progress
+- Supports multiple video downloads
+- Fast popup opening with cached video detection
 
-</div>
-
-## 🎬 Introduction
-
-**Blob Video Downloader** is a professional Chrome Extension designed to sniff, capture, decrypt, and download video files (such as HLS streams, `.m3u8` playlists, MP4, and WebM format) directly inside your web browser. 
-
-Unlike other online downloaders, **Blob Video Downloader** processes all stream segments locally on your machine. There are no external cloud servers, no bandwidth throttling, and no privacy compromises. It can download encrypted HLS video files on-the-fly and seamlessly merge them into a single high-quality media file.
-
----
-
-## 📸 Preview
-
-Here is a preview of the extension UI in action, featuring a glassmorphic dark interface with real-time download tracking:
-
-<div align="center">
-  <img src="./assets/extension_preview.png" width="700" alt="Blob Video Downloader UI Preview" style="border-radius: 14px; box-shadow: 0 12px 30px rgba(0,0,0,0.4);" />
-</div>
-
----
-
-## 🚀 Key Features
-
-* **⚡ Native HLS Stream Downloader**: Directly parses master/media `.m3u8` playlists, downloads `.ts` segments in parallel, and merges them.
-* **🔒 AES-128 Decryption Support**: Automatic decryption of HLS segments using the Web Crypto API, pulling key tokens directly from your session.
-* **🔍 Hybrid Detection System**:
-  * **Network Sniffing**: Uses Chrome's `webRequest` API to capture streams loaded in the background dynamically.
-  * **DOM Scraping**: Scans video elements and anchor tags, including nested `<iframe>` configurations.
-* **📂 Concurrency Control**: Downloads multiple segments in parallel (up to 12 concurrent workers) with simple recovery/retry mechanisms.
-* **🎨 Premium Interface**: Styled with a dark glassmorphic layout, using custom CSS, micro-interactions, responsive progress bars, and cancel operations.
-* **🛡️ Privacy-First & Zero Server Load**: 100% client-side compilation. Your download details and video streams never leave your device.
-
----
-
-## 🛠️ Installation
-
-Because this is a developer extension, you can load it directly into your Chromium-based browser:
-
-1. **Clone or Download the Repository**:
-   ```bash
-   git clone https://github.com/yourusername/blob-vids-downloader.git
-   ```
-   *(Or download the zip file and extract it to a directory).*
-
-2. **Open Extensions Page**:
-   Open Google Chrome (or Microsoft Edge, Brave, Opera) and navigate to:
-   ```text
-   chrome://extensions/
-   ```
-
-3. **Enable Developer Mode**:
-   Toggle the **Developer mode** switch in the top-right corner of the page.
-
-4. **Load the Extension**:
-   * Click the **Load unpacked** button in the top-left corner.
-   * Select the root directory containing this project (`blob-vids-downloader`).
-
-5. **Pin for Easy Access**:
-   Click the puzzle piece icon on your Chrome toolbar, find **Blob Video Downloader**, and pin it.
-
----
-
-## ✅ v1.2 persistent background downloads
-
-Version 1.2 moves HLS work into a persistent offscreen extension document so downloads continue when the popup closes or you switch tabs. It also collapses master/quality playlist duplicates into one visible video entry and increases segment concurrency for faster transfers.
-
-Version 1.1 also preserved the request context used by the page player when downloading authorized HLS streams. It records useful request headers, restores the original page Referer/Origin for extension media requests, includes browser session credentials, supports HLS byte ranges and fMP4 initialization segments, and correctly handles multiple AES-128 key URIs.
-
-After installing/updating the extension, **reload the extension, refresh the video page, and play the video for a few seconds before opening the popup**. This gives the detector a fresh playlist request and its current session context.
-
-The downloader does not implement DRM systems such as Widevine or unsupported HLS encryption methods such as SAMPLE-AES.
-
-## 📖 Usage
-
-Using Blob Video Downloader is incredibly straightforward:
-
-1. **Navigate** to any web page containing a video you wish to download (e.g., streaming sites, video hosting platforms).
-2. **Play the video** briefly to trigger network requests.
-3. Click the **Blob Downloader icon** in your toolbar.
-4. A list of detected streams will appear inside the popup with badges specifying their types (`HLS Stream`, `MP4`, `WEBM`).
-5. Click **Download Video** on your target stream.
-   * *For standard videos*: It downloads instantly using Chrome's native downloader.
-   * *For HLS streams*: A progress bar appears in the popup. You can close the popup or switch tabs and the download continues in the extension offscreen worker. When you reopen the popup, current progress is restored.
-6. Click the trash icon in the header if you want to clear the list of sniffed videos.
-
----
-
-## 🏗️ Architecture
-
-The flow diagram below explains how background sniffing, DOM scraping, and local compilation connect to download video files safely:
-
-```mermaid
-graph TD
-    A[User visits page with video] --> B(Background Worker background.js)
-    A --> C(Active Tab DOM)
-    
-    subgraph Network Interception
-        B -- webRequest API --- D{Matches stream file? .m3u8, .mp4, etc.}
-        D -- Yes --> E[Save video details to chrome.storage]
-    end
-    
-    subgraph DOM Scraping
-        F[Popup Opened popup.js] --> G[Execute DOM Scraper in active tab]
-        G --> H[Scan video elements & iframe source URLs]
-        H --> E
-    end
-    
-    subgraph HLS Stream Downloader
-        E --> I[Display in Popup List]
-        I -- User clicks Download --> J[Instantiate HLSDownloader]
-        J --> K[Fetch Master & Media Playlists]
-        K --> L[Extract Segment URLs & AES-128 Keys]
-        L --> M[Offscreen worker fetches segments in parallel max. 12]
-        M --> N[Decrypt segments using Web Crypto AES-CBC]
-        N --> O[Stitch TS Buffers in memory]
-        O --> P[Create Object Blob URL]
-        P --> Q[Trigger chrome.downloads API]
-    end
-```
-
----
-
-## 📂 File Directory Structure
+## # How It Works
 
 ```text
-blob-vids-downloader/
-│
-├── assets/                    # Graphical resources
-│   └── extension_preview.png  # Generated screenshot banner
-│
-├── background.js              # Service worker intercepting network traffic
-├── manifest.json              # Extension metadata and Manifest V3 details
-├── popup.html                 # Visual layout of the dropdown extension panel
-├── popup.css                  # Modern Outfit typography and glassmorphic styles
-├── popup.js                   # Popup UI and DOM scraper
-├── offscreen.html              # Persistent hidden extension document
-├── offscreen.js                # HLS downloader that survives popup closing
-│
-├── icon.svg                   # Vector source logo (indigo/purple play-down gradient)
-├── icon16.png                 # Toolbar icon (16x16)
-├── icon48.png                 # Extension dashboard icon (48x48)
-├── icon128.png                # Chrome Web Store asset (128x128)
-└── resize_icon.py             # Script to generate sizes automatically from SVG
+Webpage
+   ↓
+Media / HLS Requests
+   ↓
+M3U8 Detection
+   ↓
+Stream Grouping
+   ↓
+Page Order Matching
+   ↓
+Best Quality Selection
+   ↓
+HLS Segment Downloading
+   ↓
+Parallel Segment Fetching
+   ↓
+Video Merge
+   ↓
+Saved Video File
 ```
 
----
+## # Why I Created This
 
-## 🛡️ Technical Specifications
+While learning about browser networking and video streaming, I came across websites where video content was embedded inside custom players and the actual media files were not directly visible through a normal download button.
 
-### Concurrency and Abort Processing
-The extension implements a sliding worker queue for stream segments:
-```javascript
-const concurrency = Math.min(12, Math.max(4, segments.length));
-const queue = [...Array(segments.length).keys()];
-// Worker threads pull indexes from the queue concurrently
+During development, I also tested situations involving embedded, private, locked, or protected-looking video players. Some video systems use authentication, signed URLs, DRM, encrypted media, subscriptions, or other access controls. This project is not intended to defeat those protections.
+
+The purpose of this repository is educational: to understand HLS streaming and browser-extension development by building the downloader myself.
+
+## # Important Notice
+
+This project is intended for learning, development, testing, and downloading media that you are allowed to save.
+
+It is **not designed to bypass DRM, authentication, subscriptions, paywalls, access restrictions, or other security mechanisms**.
+
+Websites, video providers, and content owners may have their own terms, copyright rules, and technical restrictions. Users are responsible for using this project appropriately and respecting those requirements.
+
+## # Tech Stack
+
+- JavaScript
+- HTML
+- CSS
+- Chrome Extension APIs
+- Manifest V3
+- HLS / M3U8
+- Chrome Web Request APIs
+- Chrome Downloads API
+- Offscreen Documents
+- Browser Storage
+
+## # Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/dineshsinghdhami/protected-hls-downloader-extension.git
+cd protected-hls-downloader-extension
 ```
-If you decide to stop downloading mid-process, the **Cancel** button immediately executes abort signals via the `AbortController` API, freeing socket connections and memory:
-```javascript
-cancel() {
-  this.isCancelled = true;
-  for (const controller of this.activeFetches) {
-    controller.abort();
-  }
-}
+
+Or download the repository as a ZIP and extract it.
+
+Open Browser and go to:
+
+```text
+Browser://extensions/
 ```
 
-### AES-128 Decryption
-The segment decryption leverages the fast, hardware-accelerated Web Crypto API:
-```javascript
-const cryptoKey = await crypto.subtle.importKey(
-  "raw",
-  keyInfo.keyBuffer,
-  { name: "AES-CBC" },
-  false,
-  ["decrypt"]
-);
+Then:
+
+1. Enable **Developer mode**
+2. Click **Load unpacked**
+3. Select the extension folder
+4. Open a supported webpage containing HLS video
+5. Refresh the webpage if necessary
+6. Play the video briefly so the stream can be detected
+7. Open the extension
+8. Select the video you want to download
+
+## # Project Structure
+
+```text
+protected-hls-downloader-extension/
+├── background.js
+├── offscreen.js
+├── offscreen.html
+├── popup.js
+├── popup.html
+├── styles.css
+├── manifest.json
+├── icon16.png
+├── icon48.png
+├── icon128.png
+├── assets/
+│   └── screenshot.png
+├── README.md
+└── .gitignore
 ```
 
----
+> The exact filenames may vary depending on the current version of the extension.
 
-## 📄 License
+## # Current Limitations
 
-This project is licensed under the MIT License. Feel free to modify and distribute it as needed.
+- The extension focuses mainly on HLS/M3U8 streams
+- Some websites may use stream formats or player implementations that are not detected
+- DRM-protected media is not supported
+- Authentication-protected streams may depend on the website's own session and access rules
+- Video and audio may be delivered separately on some platforms
+- Some HLS streams may require additional remuxing for full MP4 compatibility
+- Websites can change their player or network implementation at any time
 
----
+## # Development Purpose
 
-<div align="center">
-  Made with ❤️ by a developer who loves clean code.
-</div>
+This repository is published as a learning project and as a record of my progress while studying browser extensions, networking, and video streaming.
 
+It is not affiliated with any website, video platform, educational organization, CDN provider, or content owner.
 
-## v1.2.6
-Popup startup is now non-blocking: cached/grouped videos render immediately, while DOM scanning and full HLS playlist classification refresh silently in the background. Download behavior, numbering, and filtering are unchanged.
+If a website does not provide permission to download its content, users should follow that website's rules and the rights of the content owner.
+
+## # Author
+
+**Dinesh Singh Dhami**
+
+GitHub: [github.com/dineshsinghdhami](https://github.com/dineshsinghdhami)

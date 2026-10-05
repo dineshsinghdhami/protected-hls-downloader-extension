@@ -6,7 +6,7 @@ An extension for detecting, organizing, and downloading embedded, locked, privat
 
 ## # Screenshot
 
-![Protected HLS Downloader Extension](assets/screenshot.png)
+![Protected HLS Downloader Extension](assets/1screenshot.png)
 
 ## # Features
 
